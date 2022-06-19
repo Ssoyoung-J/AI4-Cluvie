@@ -5,23 +5,10 @@ import { CardContent } from "@mui/material";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import SettingsIcon from "@mui/icons-material/Settings";
 import ClubDetailTab from "@/components/ClubDetail/ClubDetailTab";
+import * as Interface from "@/utils/interface";
 import * as Style from "./ClubPreviewStyle";
 
-interface Club {
-  id: number;
-  name: string;
-  picture: string | null;
-  intro: string;
-  day: number;
-  description: string;
-  views: number | null;
-  num: number;
-  process: number;
-  duration_of_progress: number;
-  club_state: string;
-}
-
-function ClubPreview({ newClub }: { newClub: Club }) {
+function ClubPreview({ newClub }: { newClub: Interface.Club }) {
   return (
     <div>
       <Style.WholeBox>
@@ -39,11 +26,12 @@ function ClubPreview({ newClub }: { newClub: Club }) {
               </Style.Title>
               <Style.Text1>{newClub.intro}</Style.Text1>
               <Style.Text2>
-                본 클럽은 {newClub.process ? "오프라인" : "온라인"}으로
-                진행됩니다.
+                본 클럽은 {newClub.online ? "온라인" : ""}
+                {newClub.offline ? "오프라인" : ""}으로 진행됩니다.
               </Style.Text2>
               <Style.Text2>
-                모집 마감까지 6자리 남았어요! (현재 14명 / 최대 {newClub.num}명)
+                모집 마감까지 6자리 남았어요! (현재 14명 / 최대{" "}
+                {newClub.head_count}명)
               </Style.Text2>
               <Style.Text3>
                 *클럽 사정에 따라 모집이 조기 마감될 수 있습니다.

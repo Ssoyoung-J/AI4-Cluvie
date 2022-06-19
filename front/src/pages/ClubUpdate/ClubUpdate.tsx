@@ -8,24 +8,11 @@ import "react-quill/dist/quill.snow.css";
 import Header from "@/components/Header/Header";
 import ClubPreview from "@/components/ClubCreate/ClubPreview/ClubPreview"
 import * as Api from "@/utils/api";
+import * as Interface from "@/utils/interface";
 import * as Style from './ClubUpdateStyle'
 
-interface Club {
-  id: number;
-  name: string;
-  picture: string | null;
-  intro: string;
-  day: number;
-  description: string;
-  views: number | null;
-  num: number;
-  process: number;
-  duration_of_progress: number;
-  club_state: string;
-}
-
 interface CustomizedState {
-  club: Club
+  club: Interface.Club
 }
 
 function EditorComponent() {
@@ -37,16 +24,7 @@ function EditorComponent() {
   const [contents, setContents] = useState("");
   const [duplication, setDuplication] = useState(0);
   const [preview, setPreview] = useState(false);
-  const [clubInfo, setClubInfo] = useState({
-    name: '텍스트에디터테스트2',
-    intro: '클럽생성2텍스트에디터테스트입니다.22',
-    day: 1,
-    description: '상세보기를 작성해주세요',
-    num: 40,
-    process: 1,
-    duration_of_progress : 0,
-    club_state: "모집중"
-  });
+  const [clubInfo, setClubInfo] = useState(club);
 
   useEffect(() => {
     if (document.querySelector(".ql-toolbar:nth-child(2)")) setDuplication(1);
@@ -54,13 +32,10 @@ function EditorComponent() {
   },[])
 
   useEffect(() => {
-    setContents(club.description);
+    if (club) {
+      setContents(club.description ? club.description : "");
+    }
   },[club])
-
-  // toolbar 중복확인
-  useEffect(() => {
-    console.log('duplication',duplication)
-  },[duplication])
   
   useEffect(() => {
     setClubInfo({...clubInfo, description: contents})
@@ -146,15 +121,16 @@ const modules = useMemo(
   const handleSubmit = () => {
     console.log('clubInfo',clubInfo)
 
-    Api.put("/clubs/13", clubInfo)
+    Api.put(`/clubs/${club.id}`, clubInfo)
       .then((res)=> console.log(res))
       .catch((err) => console.log(err));
   }
 
 return (
 	<div>
+    {duplication === -1 && <Style.CoverDiv />}
     <Style.WholeBox>
-      <Header />
+      {/* <Header /> */}
       <Style.Title>
         클럽 상세 정보
       </Style.Title>
@@ -171,7 +147,7 @@ return (
         defaultValue={club.description}
         duplicated={duplication}
       />
-      {preview && <ClubPreview newClub={{...clubInfo, id: 999, picture: null, views: 0}}/>}
+      {preview && <ClubPreview newClub={{...clubInfo, id: 999, picture: "", views: 0}}/>}
       <Style.ButtonBox>
       <Style.BackLink to='/clubDetail'>
         <Style.MyButton1>

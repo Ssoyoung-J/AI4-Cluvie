@@ -4,37 +4,40 @@ import React,{ useRef, useState, useMemo, useEffect } from 'react';
 import axios, { AxiosError } from "axios";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+
 import Header from "@/components/Header/Header";
-import ClubPreview from "@/components/ClubCreate/ClubPreview/ClubPreview"
+import ClubCreateBasic from "@/components/ClubCreate/ClubCreateBasic/ClubCreateBasic";
+import ClubPreview from "@/components/ClubCreate/ClubPreview/ClubPreview";
+
 import * as Api from "@/utils/api";
 import * as Style from './ClubCreateStyle'
 
 function EditorComponent() {
   const QuillRef = useRef<ReactQuill>();
   const [contents, setContents] = useState("");
-  const [duplication, setDuplication] = useState(0);
+  const [duplication, setDuplication] = useState(-1);
   const [preview, setPreview] = useState(false);
   const [clubInfo, setClubInfo] = useState({
-    name: '테스트22',
-    intro: '클럽생성테스트22입니다.',
-    day: 1,
+    name: "",
+    manager: 4,
+    picture: "1",
+    intro: "",
+    duration: 0,
+    state: "모집중",
+    online: 0,
+    offline: 0,
     description: '상세보기를 작성해주세요',
-    num: 40,
-    process: 1,
-    duration_of_progress : 0,
-    club_state: "모집중",
-    manager_id: 4,
+    views: 0,
+    head_count: 1,
+    weekday: 0,
+    weekend: 0,
+    hashtags: ""
   });
 
   useEffect(() => {
     if (document.querySelector(".ql-toolbar:nth-child(2)")) setDuplication(1);
     else setDuplication(0)
   },[])
-
-  // toolbar 중복확인
-  useEffect(() => {
-    console.log('duplication',duplication)
-  },[duplication])
   
   useEffect(() => {
     setClubInfo({...clubInfo, description: contents})
@@ -125,11 +128,11 @@ const modules = useMemo(
 
 return (
 	<div>
+    <ClubCreateBasic clubInfo={clubInfo} setClubInfo={setClubInfo} />
+    {duplication === -1 && <Style.CoverDiv />}
     <Style.WholeBox>
-      <Header />
-      <Style.Title>
-        클럽 상세 정보
-      </Style.Title>
+      {/* <Header /> */}
+
       <Style.ClubReactQuill
         ref={(element) => {
             if (element !== null) {
@@ -143,7 +146,7 @@ return (
         placeholder="내용을 입력해주세요."
         duplicated={duplication}
       />
-      {preview && <ClubPreview newClub={{...clubInfo, id: 999, picture: null, views: 0}}/>}
+      {preview && <ClubPreview newClub={clubInfo}/>}
       <Style.ButtonBox>
         <Style.MyButton1>
           취소

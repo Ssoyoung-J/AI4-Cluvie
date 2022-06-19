@@ -17,7 +17,7 @@ module.exports = class Club extends Sequelize.Model {
           allowNull: false,
         },
         // 클럽장 id
-        manager_id: {
+        manager: {
           type: Sequelize.INTEGER,
           allowNull: false,
         },
@@ -32,19 +32,29 @@ module.exports = class Club extends Sequelize.Model {
           allowNull: false,
         },
         // 클럽 진행 기간
-        duration_of_progress: {
+        duration: {
           type: Sequelize.TINYINT,
           allowNull: false,
         },
         // 클럽 모집 상태
-        club_state: {
-          type: Sequelize.STRING(10),
+        state: {
+          type: Sequelize.STRING,
           allowNull: false,
         },
-        // 클럽 진행(주중/ 주말)
-        day: {
+        hashtags: {
+          type: Sequelize.STRING,
+          allowNull: true,
+        },
+        // 클럽 진행(온라인/ 오프라인)
+        online: {
           type: Sequelize.TINYINT,
-          allowNull: false,
+          allowNull: true,
+          defaultValue: 0,
+        },
+        offline: {
+          type: Sequelize.TINYINT,
+          allowNull: true,
+          defaultValue: 0,
         },
         // 클럽 상세 설명
         description: {
@@ -57,14 +67,20 @@ module.exports = class Club extends Sequelize.Model {
           allowNull: true,
         },
         // 클럽 인원수
-        num: {
+        head_count: {
           type: Sequelize.INTEGER,
           allowNull: false,
         },
-        // 클럽 진행 방식(온라인/오프라인)
-        process: {
+        // 클럽 진행 방식(주중/주말)
+        weekday: {
           type: Sequelize.TINYINT,
-          allowNull: false,
+          allowNull: true,
+          defaultValue: 0,
+        },
+        weekend: {
+          type: Sequelize.TINYINT,
+          allowNull: true,
+          defaultValue: 0,
         },
         created_at: {
           type: Sequelize.DATE,
