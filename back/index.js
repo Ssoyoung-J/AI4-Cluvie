@@ -2,10 +2,10 @@ import cors from "cors";
 import express, { application } from "express";
 import db from "./models/index";
 import clubRouter from "./src/routes/club/router";
-import registerRouter from "./src/routes/register/router";
 import userRouter from "./src/routes/user/router";
 import likeRouter from "./src/routes/like/router";
 import applicantRouter from "./src/routes/applicant/router";
+import authRouter from "./src/routes/email/router";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -30,11 +30,11 @@ app.get("/", (req, res) => {
   res.send("Hello Express");
 });
 
-app.use(userRouter);
-app.use(registerRouter);
-app.use(likeRouter);
+app.use("/users", userRouter);
+app.use("/likes", likeRouter);
 app.use("/clubs", clubRouter);
 app.use("/applications", applicantRouter);
+app.use(authRouter);
 
 app.listen(PORT, () => {
   console.log(`정상적으로 서버를 시작하였습니다. http://localhost:${PORT}`);

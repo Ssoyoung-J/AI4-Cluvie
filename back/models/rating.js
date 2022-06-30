@@ -1,40 +1,49 @@
 import Sequelize from "sequelize";
 
-module.exports = class Applicants extends Sequelize.Model {
+module.exports = class Ratings extends Sequelize.Model {
   static init(sequelize) {
     return super.init(
       {
-        user_id: {
-          type: Sequelize.INTEGER,
-          allowNull: false,
-          primaryKey: true,
-        },
         club_id: {
           type: Sequelize.INTEGER,
           allowNull: false,
           primaryKey: true,
         },
-        status: {
-          type: Sequelize.TINYINT,
+        count: {
+          type: Sequelize.INTEGER,
           allowNull: false,
-          defaultValue: "0",
+          defaultValue: 0,
+        },
+        star_sum: {
+          type: Sequelize.FLOAT,
+          allowNull: false,
+          defaultValue: 0,
+        },
+        rating: {
+          type: Sequelize.FLOAT,
+          allowNull: false,
+          defaultValue: 0,
         },
         created_at: {
           type: Sequelize.DATE,
           allowNull: false,
-          defaultValue: Sequelize.fn("Now"),
+          defaultValue: Sequelize.fn("NOW"),
+        },
+        updated_at: {
+          type: Sequelize.DATE,
+          allowNull: false,
+          defaultValue: Sequelize.fn("NOW"),
         },
         is_deleted: {
           type: Sequelize.TINYINT,
-          allowNull: false,
-          defaultValue: "0",
+          allowNull: true,
         },
       },
       {
         sequelize,
         timestamps: false,
-        modelName: "Applicants",
-        tableName: "applicants",
+        modelName: "Ratings",
+        tableName: "ratings",
         paranoid: false,
         charset: "utf8",
         collate: "utf8_general_ci",
